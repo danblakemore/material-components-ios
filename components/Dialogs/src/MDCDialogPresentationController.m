@@ -273,8 +273,12 @@ static UIEdgeInsets MDCDialogEdgeInsets = {24, 20, 24, 20};
   CGSize newSize = [self sizeForChildContentContainer:container
                               withParentContainerSize:self.containerView.bounds.size];
 
-  if (!CGSizeEqualToSize(existingSize, newSize)) {
+  if (!CGSizeEqualToSize(existingSize, newSize) && !CGSizeEqualToSize(newSize, CGSizeZero)) {
     CGRect presentedViewFrame = [self frameOfPresentedViewInContainerView];
+    id<UIViewControllerTransitionCoordinator> transitionCoordinator =
+        [self.presentedViewController transitionCoordinator];
+    [container viewWillTransitionToSize:presentedViewFrame.size
+              withTransitionCoordinator:transitionCoordinator];
     self.presentedView.frame = presentedViewFrame;
     self.trackingView.frame = presentedViewFrame;
   }
